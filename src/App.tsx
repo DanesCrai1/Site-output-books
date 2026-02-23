@@ -34,14 +34,14 @@ function App() {
   }, []);
 
 
-  const addBookInList = () => {
+  const addBookInList = async () => {
     try {
       setListBooks({ ...listBooks, [page]: currentDataPage });
 
       setLastPage(lastPage + 1);
       setPage(lastPage);
 
-      getCurrentData();
+      await getCurrentData();
     } catch (error) {
       console.log(error);
     }
