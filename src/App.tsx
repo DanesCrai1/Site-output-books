@@ -7,14 +7,11 @@ import Pages from './Components/Pages/Pages';
 function App() {
   const [books, setBooks] = useState<dataBook[]>([]);
 
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
+  const [lastPage, setLastPage] = useState<number>(1);
   const [currentDataPage, setCurrentDataPage] = useState<any>();
   const [listBooks, setListBooks] = useState({})
   const [isLoading, setIsLoading] = useState(false);
-
-  const openPage = () => {
-
-  }
 
   const getCurrentData = async () => {
     setIsLoading(true);
@@ -40,7 +37,9 @@ function App() {
   const addBookInList = () => {
     try {
       setListBooks({ ...listBooks, [page]: currentDataPage });
-      setPage(page + 1);
+
+      setLastPage(lastPage + 1);
+      setPage(lastPage);
 
       getCurrentData();
     } catch (error) {
@@ -50,9 +49,10 @@ function App() {
 
   return (
     <>
-      {isLoading === false ? listBooks !== undefined ? <Books data={listBooks} page={page} /> : '' : ''}
-      {isLoading === true ? <div>Загрузка страницы</div> : <button onClick={addBookInList}>Next Page</button>}
-      {<Pages listBooks={listBooks} currentPage={page} setCurrentPage={setNumberPage} />}
+      {isLoading ? <div>Загрузка страницы</div> : ''}
+      {!isLoading ? <button onClick={addBookInList}>Next Page</button> : ''}
+      {!isLoading ? listBooks !== undefined ? <Books data={listBooks} page={page} /> : '' : ''}
+      {!isLoading ? <Pages listBooks={listBooks} currentPage={page} setCurrentPage={setNumberPage} /> : ''}
     </>
   )
 }
